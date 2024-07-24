@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Pomodoro Timer with Todo List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        .wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 80%;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 40px;
+        }
+        .pomodoro-timer {
+            margin-right: 50px;
+            text-align: center;
+        }
+        .todo-list {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .timer-form {
+            margin-bottom: 20px;
+        }
+        .todo-item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+        .todo-item input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        svg {
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+<div class="wrapper">
+    <div class="container">
+        <div class="pomodoro-timer">
+            <div class="timer-form">
+                <label for="focusTime">Focus Time (minutes):</label>
+                <input type="number" id="focusTime" name="focusTime" min="1" max="60" value="25">
+                <button onclick="startTimer()">Start</button>
+            </div>
+            <div id="timer">
+                <svg>
+                    <circle cx="150" cy="150" r="140" stroke="black" stroke-width="5" fill="none"/>
+                    <line x1="150" y1="150" x2="150" y2="10" stroke="black" stroke-width="5" id="minute-hand"/>
+                </svg>
+                <div>Remaining Time: <span id="remainingTime">25:00</span></div>
+            </div>
+        </div>
+        <div class="todo-list">
+            <h2>Todo List</h2>
+            <div id="todoItems">
+                <!-- Todo items will be appended here -->
+            </div>
+            <button onclick="addTodo()">+</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let timerInterval;
+    let remainingSeconds;
+
+    function startTimer() {
+        const focusTime = document.getElementById('focusTime').value;
+        remainingSeconds = focusTime * 60;
+        updateTimerDisplay();
+        if (timerInterval) {
+            clearInterval(timerInterval);
+        }
+        timerInterval = setInterval(countdown, 1000);
+    }
+
+    function countdown() {
+        if (remainingSeconds <= 0) {
+            clearInterval(timerInterval);
+            alert('Time\'s up!');
+        } else {
+            remainingSeconds--;
+            updateTimerDisplay();
+        }
+    }
+
+    function updateTimerDisplay() {
+        const minutes = Math.floor(remainingSeconds / 60);
+        const seconds = remainingSeconds % 60;
+        document.getElementById('remainingTime').innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+        const angle = (remainingSeconds / (document.getElementById('focusTime').value * 60)) * 360;
+        document.getElementById('minute-hand').setAttribute('transform', `rotate(${angle}, 150, 150)`);
+    }
+
+    function addTodo() {
+        const todoItems = document.getElementById('todoItems');
+        const todoItem = document.createElement('div');
+        todoItem.className = 'todo-item';
+        todoItem.innerHTML = `
+            <input type="checkbox">
+            <input type="text" placeholder="New task">
+        `;
+        todoItems.appendChild(todoItem);
+    }
+</script>
+</body>
+</html>
+
