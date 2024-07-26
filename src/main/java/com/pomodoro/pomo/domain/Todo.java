@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -14,33 +15,30 @@ public class Todo {
     @Column(name="todo_id")
     private Long id;
 
-    @OneToOne(mappedBy = "todo")
-    private Category category;
+    @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL)
+    private List<Category> categories;
+
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
+
+    private LocalDateTime dueDate;
 
     public void changeCategory(Category category){
-        this.category = category;
+        this.categories.add(category);
         category.setTodo(this);
     }
 
-    private String task;
-
-    @Enumerated(EnumType.STRING)
-    private TaskStatus taskStatus;
-
-    private LocalDateTime deadline;
-
-    private LocalDateTime createdDate;
-    
     public void setDate(LocalDateTime dead, LocalDateTime created) {
-        this.deadline = dead;
-        this.createdDate = created;
+        this.dueDate = dead;
     }
 
     public void createTask(String task){
-        this.task = task;
+        this.name = task;
     }
 
     public void changeStatus(TaskStatus status){
-        this.taskStatus = status;
+        this.status = status;
     }
 }

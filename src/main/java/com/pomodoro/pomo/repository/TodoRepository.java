@@ -21,13 +21,18 @@ public class TodoRepository {
         return em.find(Todo.class, id);
     }
 
+    public List<Todo> findAll(){
+        return em.createQuery("select t from Todo t", Todo.class)
+                .getResultList();
+    }
+
     public List<Todo> findByOption(TodoSearch todosearch) {
-        return em.createQuery("select t from Todo t join t.category c" +
-                        " where t.taskStatus = :status" +
-                        " and t.deadline = :deadline" +
+        return em.createQuery("select t from Todo t join t.categories c" +
+                        " where t.status = :status" +
+                        " and t.dueDate = :dueDate" +
                         " and c.name like :name", Todo.class)
                 .setParameter("status", todosearch.getStatus())
-                .setParameter("deadline", todosearch.getDeadline())
+                .setParameter("dueDate", todosearch.getDueDate())
                 .setParameter("name", todosearch.getName())
                 .setMaxResults(1000)  // 최대 1000건 조회
                 .getResultList();

@@ -12,6 +12,6 @@ public class TodoSearch {
 
     private Category name;
     private TaskStatus status;
-    private LocalDateTime deadline;
+    private LocalDateTime dueDate;
 
 }
