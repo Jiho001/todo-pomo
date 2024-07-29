@@ -17,7 +17,7 @@ public class TodoService {
     private final TodoRepository todoRepository;
 
     @Transactional
-    public void saveTodo(Todo todo){
+    public void saveTodo(Todo todo) {
         todoRepository.save(todo);
     }
 

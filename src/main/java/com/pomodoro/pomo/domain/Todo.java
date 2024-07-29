@@ -3,8 +3,11 @@ package com.pomodoro.pomo.domain;
 import com.pomodoro.pomo.TaskStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
+import org.springframework.scheduling.config.Task;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -16,22 +19,30 @@ public class Todo {
     private Long id;
 
     @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL)
-    private List<Category> categories;
+    private List<Category> categories = new ArrayList<>();
 
     private String name;
 
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-    private LocalDateTime dueDate;
+    private LocalDate dueDate;
 
-    public void changeCategory(Category category){
+    public void addCategory(Category category){
         this.categories.add(category);
         category.setTodo(this);
     }
 
-    public void setDate(LocalDateTime dead, LocalDateTime created) {
-        this.dueDate = dead;
+    public static Todo createTodo(String name, LocalDate dueDate, TaskStatus status) {
+        Todo todo = new Todo();
+        todo.createTask(name);
+        todo.setDate(dueDate);
+        todo.changeStatus(status);
+        return todo;
+    }
+
+    public void setDate(LocalDate due) {
+        this.dueDate = due;
     }
 
     public void createTask(String task){
