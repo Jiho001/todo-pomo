@@ -1,5 +1,6 @@
 package com.pomodoro.pomo.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +12,9 @@ public class Category {
     @Column(name="category_id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "todo_id")
+    @JsonIgnore
     private Todo todo;
 
     private String name;

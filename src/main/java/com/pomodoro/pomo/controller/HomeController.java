@@ -18,7 +18,7 @@ import java.util.List;
 public class HomeController {
     private final TodoService todoService;
 
-    @GetMapping()
+    @GetMapping("/api/todos")
     public String home(){
         return "home";
     }

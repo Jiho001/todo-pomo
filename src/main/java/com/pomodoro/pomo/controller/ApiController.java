@@ -3,6 +3,7 @@ package com.pomodoro.pomo.controller;
 import com.pomodoro.pomo.TaskStatus;
 import com.pomodoro.pomo.domain.Category;
 import com.pomodoro.pomo.domain.Todo;
+import com.pomodoro.pomo.repository.TodoRepository;
 import com.pomodoro.pomo.service.TodoService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,10 +26,12 @@ public class ApiController {
         Todo todo = Todo.createTodo(request.getName(), request.getDueDate(),
                 request.getTaskStatus());
         List<Category> categories = request.getCategories();
-        categories.stream().forEach(category -> todo.addCategory(category));
+        categories.forEach(todo::addCategory);
 
         todoService.saveTodo(todo);
-        return new CreateTodoResponse(todo.getName());
+        Todo findTodo = todoService.findTodo(todo.getId());
+        return new CreateTodoResponse(findTodo.getName(), findTodo.getStatus(),
+                findTodo.getDueDate(), findTodo.getCategories());
     }
 
     @Data
@@ -43,5 +46,8 @@ public class ApiController {
     @AllArgsConstructor
     static class CreateTodoResponse {
         private String name;
+        private TaskStatus taskStatus;
+        private LocalDate dueDate;
+        private List<Category> categories;
     }
 }

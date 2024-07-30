@@ -51,12 +51,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const categories = [];
         for (let i = 0; i < categoryInputs.length; i++) {
             if (categoryInputs[i].value) {
-                categories.push({ name: categoryInputs[i].value });
+                categories.push({ todoName: categoryInputs[i].value });
             }
         }
 
         const newTodo = {
-            name: name,
+            todoName: name,
             dueDate: dueDate,
             status: status,
             categories: categories
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const categoryFilter = document.getElementById('category-filter').value;
         const statusFilter = document.getElementById('status-filter').value;
 
-        let query = '/';
+        let query = '/api/todos?'; // 올바른 URL 경로로 설정
         if (categoryFilter) {
             query += `category=${categoryFilter}&`;
         }
@@ -94,20 +94,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         fetch(query)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
+                // data가 단일 객체임을 가정하고 처리
                 const tbody = document.getElementById('todo-table').getElementsByTagName('tbody')[0];
-                tbody.innerHTML = '';
-                data.forEach(todo => {
+                tbody.innerHTML = ''; // 기존 테이블 내용을 초기화
+
+                // 응답이 단일 객체인 경우
+                if (data) {
                     const row = tbody.insertRow();
-                    row.insertCell(0).innerText = todo.name;
-                    row.insertCell(1).innerText = todo.dueDate;
-                    row.insertCell(2).innerText = todo.categories.map(category => category.name).join(', ');
-                    row.insertCell(3).innerText = todo.status;
-                });
+                    row.insertCell(0).innerText = data.name;
+                    row.insertCell(1).innerText = data.dueDate;
+                    row.insertCell(2).innerText = data.categories.map(category => category.name).join(', ');
+                    row.insertCell(3).innerText = data.status || ''; // taskStatus가 null인 경우 빈 문자열 처리
+                }
             })
             .catch(error => console.error('Error:', error));
     }
+
 
     fetchTodos();
 });

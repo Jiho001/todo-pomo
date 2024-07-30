@@ -29,7 +29,7 @@ public class Todo {
     private LocalDate dueDate;
 
     public void addCategory(Category category){
-        this.categories.add(category);
+        categories.add(category);
         category.setTodo(this);
     }
 
