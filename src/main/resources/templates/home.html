@@ -1,79 +1,55 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo List</title>
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/styles-ver2.css">
 </head>
 <body>
 <div class="container">
     <h1>Todo List</h1>
-    <button id="new-todo-button" class="btn">새로 만들기</button>
-
-    <div id="new-todo-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h2>새 Todo 만들기</h2>
-
-            <form id="new-todo-form">
-                <label for="name">Todo 이름:</label>
-                <input type="text" id="name" name="name" required>
-
-                <label for="due-date">Due Date:</label>
-                <input type="date" id="due-date" name="due-date" required>
-
-                <label for="categories">카테고리:</label>
-                <div id="categories">
-                    <div class="category-input">
-                        <input type="text" class="category" name="category">
-                        <button type="button" class="remove-category-button">x</button>
-                    </div>
-                </div>
-                <button type="button" id="add-category-button">카테고리 추가</button>
-
-                <label for="status">Task Status:</label>
-                <select id="status" name="status">
-                    <option value="완료">완료</option>
-                    <option value="진행 중">진행 중</option>
-                    <option value="대기">대기</option>
-                </select>
-
-                <button type="submit" class="btn">추가</button>
-            </form>
-
-        </div>
-    </div>
+    <button id="create-todo-btn">투두 생성</button>
 
     <div class="filters">
-        <label for="category-filter">카테고리 필터:</label>
+        <h3>필터</h3>
+        <label for="category-filter">카테고리:</label>
         <input type="text" id="category-filter">
-
-        <label for="status-filter">Status 필터:</label>
+        <label for="status-filter">상태:</label>
         <select id="status-filter">
-            <option value="">모두</option>
+            <option value="">전체</option>
+            <option value="진행중">진행중</option>
             <option value="완료">완료</option>
-            <option value="진행 중">진행 중</option>
             <option value="대기">대기</option>
         </select>
-
-        <button id="filter-button" class="btn">필터 적용</button>
+        <button id="filter-btn">검색</button>
     </div>
 
-    <table id="todo-table">
-        <thead>
-        <tr>
-            <th>Todo 이름</th>
-            <th>Due Date</th>
-            <th>카테고리</th>
-            <th>Task Status</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Todos will be dynamically inserted here -->
-        </tbody>
-    </table>
+    <div class="todo-list" id="todo-list">
+        <!-- 투두 리스트가 여기에 표시됩니다 -->
+    </div>
 </div>
 
-<script src="/js/scripts.js"></script>
+<!-- 모달 창 -->
+<div class="modal" id="todo-modal">
+    <h2>투두 생성</h2>
+    <label for="todo-name">이름:</label>
+    <input type="text" id="todo-name">
+    <label for="todo-due-date">마감기한:</label>
+    <input type="date" id="todo-due-date">
+    <label for="todo-status">상태:</label>
+    <select id="todo-status">
+        <option value="진행중">진행중</option>
+        <option value="완료">완료</option>
+        <option value="대기">대기</option>
+    </select>
+    <label for="todo-categories">카테고리 (쉼표로 구분):</label>
+    <input type="text" id="todo-categories">
+    <button id="save-todo-btn">저장</button>
+    <button id="close-modal-btn">닫기</button>
+</div>
+
+<script src="/js/script-ver2.js"></script>
 </body>
 </html>
+
