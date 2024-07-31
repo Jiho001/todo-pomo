@@ -89,10 +89,20 @@ document.addEventListener("DOMContentLoaded", () => {
     function addTodoToDOM(todo) {
         const item = document.createElement("div");
         item.className = "todo-item";
+
+        let nameColor;
+        if (todo.status.name === "진행중") {
+            nameColor = "blue";
+        } else if (todo.status.name === "완료") {
+            nameColor = "green";
+        } else {
+            nameColor = "black";
+        }
+
         item.innerHTML = `
-            <h3>${todo.name}</h3>
+            <h3 style="color: ${nameColor};">${todo.name}</h3>
             <p>마감기한: ${todo.dueDate}</p>
-            <p>상태: ${todo.taskStatus || 'N/A'}</p>
+            <p>상태: ${todo.status.name}</p>
             <p>카테고리: ${todo.categories.map(cat => cat.name).join(', ')}</p>
         `;
         todoList.appendChild(item);

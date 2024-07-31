@@ -3,28 +3,29 @@ package com.pomodoro.pomo.controller;
 import com.pomodoro.pomo.TaskStatus;
 import com.pomodoro.pomo.domain.Category;
 import com.pomodoro.pomo.domain.Todo;
-import com.pomodoro.pomo.repository.TodoRepository;
 import com.pomodoro.pomo.service.TodoService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class ApiController {
 
     private final TodoService todoService;
     @PostMapping("/api/todos")
     public CreateTodoResponse addTodo(@RequestBody CreateTodoRequest request) {
+        log.info("status: ", request.getStatus());
         Todo todo = Todo.createTodo(request.getName(), request.getDueDate(),
-                request.getTaskStatus());
+                request.getStatus());
         List<Category> categories = request.getCategories();
         categories.forEach(todo::addCategory);
 
@@ -37,7 +38,7 @@ public class ApiController {
     @Data
     static class CreateTodoRequest {
         private String name;
-        private TaskStatus taskStatus;
+        private TaskStatus status;
         private LocalDate dueDate;
         private List<Category> categories;
     }
@@ -46,7 +47,7 @@ public class ApiController {
     @AllArgsConstructor
     static class CreateTodoResponse {
         private String name;
-        private TaskStatus taskStatus;
+        private TaskStatus status;
         private LocalDate dueDate;
         private List<Category> categories;
     }
