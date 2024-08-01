@@ -8,9 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,8 +20,7 @@ public class ApiController {
 
     private final TodoService todoService;
     @PostMapping("/api/todos")
-    public CreateTodoResponse addTodo(@RequestBody CreateTodoRequest request) {
-        log.info("status: ", request.getStatus());
+    public TodoResponse addTodo(@RequestBody TodoRequest request) {
         Todo todo = Todo.createTodo(request.getName(), request.getDueDate(),
                 request.getStatus());
         List<Category> categories = request.getCategories();
@@ -31,12 +28,18 @@ public class ApiController {
 
         todoService.saveTodo(todo);
         Todo findTodo = todoService.findTodo(todo.getId());
-        return new CreateTodoResponse(findTodo.getName(), findTodo.getStatus(),
+        return new TodoResponse(findTodo.getName(), findTodo.getStatus(),
                 findTodo.getDueDate(), findTodo.getCategories());
     }
 
+    @GetMapping("/api/todos/edit/{todoId}")
+    public TodoResponse editTodo(@PathVariable("todoId") Long todoId,
+                                 @RequestBody TodoRequest request) {
+        Todo todo =
+    }
+
     @Data
-    static class CreateTodoRequest {
+    static class TodoRequest {
         private String name;
         private TaskStatus status;
         private LocalDate dueDate;
@@ -45,7 +48,7 @@ public class ApiController {
 
     @Data
     @AllArgsConstructor
-    static class CreateTodoResponse {
+    static class TodoResponse {
         private String name;
         private TaskStatus status;
         private LocalDate dueDate;
