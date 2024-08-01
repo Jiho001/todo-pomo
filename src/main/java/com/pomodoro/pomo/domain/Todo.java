@@ -3,6 +3,7 @@ package com.pomodoro.pomo.domain;
 import com.pomodoro.pomo.TaskStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.scheduling.config.Task;
 
 import java.time.LocalDate;
@@ -15,7 +16,7 @@ import java.util.List;
 public class Todo {
 
     @Id @GeneratedValue
-    @Column(name="todo_id")
+    @Column(name="todo_id") @Setter
     private Long id;
 
     @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL)
