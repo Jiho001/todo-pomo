@@ -34,15 +34,14 @@ public class ApiController {
                 findTodo.getDueDate(), findTodo.getCategories());
     }
 
-    @GetMapping("/api/todos/edit/{todoId}")
+    @PostMapping("/api/todos/edit/{todoId}")
     public TodoDto editTodo(@PathVariable("todoId") Long todoId,
                                  @RequestBody TodoDto request) {
-        Todo todo = new Todo();
-        todoService.editTodo(todo, todoId, request);
+        Long id = todoService.editTodo(todoId, request);
 
-        Todo findTodo = todoService.findTodo(todo.getId());
-        return new TodoDto(findTodo.getName(), findTodo.getStatus(),
-                findTodo.getDueDate(), findTodo.getCategories());
+        Todo returnTodo = todoService.findTodo(id);
+        return new TodoDto(returnTodo.getName(), returnTodo.getStatus(),
+                returnTodo.getDueDate(), returnTodo.getCategories());
     }
 
 }

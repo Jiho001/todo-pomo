@@ -16,7 +16,7 @@ import java.util.List;
 public class Todo {
 
     @Id @GeneratedValue
-    @Column(name="todo_id") @Setter
+    @Column(name="todo_id")
     private Long id;
 
     @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL)
@@ -41,6 +41,7 @@ public class Todo {
         todo.changeStatus(status);
         return todo;
     }
+
 
     public void setDate(LocalDate due) {
         this.dueDate = due;
