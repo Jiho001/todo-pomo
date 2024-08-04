@@ -36,8 +36,7 @@ public class TodoService {
         todo.changeStatus(dto.getStatus());
         todo.setDate(dto.getDueDate());
 
-        List<Category> categories = todo.getCategories();
-        categories.forEach(categoryRepository::deleteByE);
+        todo.getCategories().clear();
         dto.getCategories().forEach(todo::addCategory);
 
         return todo.getId();

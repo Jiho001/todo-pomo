@@ -19,7 +19,7 @@ public class Todo {
     @Column(name="todo_id")
     private Long id;
 
-    @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "todo", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Category> categories = new ArrayList<>();
 
     private String name;
